@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agendamento de BI</title>
+
+<style>
+
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #eef2f7;
+}
+
+header img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+.banner img {
+    width: "100%";
+    height:"320px" ;
+    object-fit: cover;
+    display: block;   
+}
+
+/* ======= FORMULÁRIO ======= */
+.form-container {
+    width: 70%;
+    max-width: 850px;
+    background: #fff;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
+}
+
+h2 {
+    text-align: center;
+    color: #0a5ebd;
+    margin-top: 15px;
+    font-size: 28px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1;
+}
+
+label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #0a5ebd;
+    outline: none;
+}
+
+/* Botão */
+.btn {
+    width: 100%;
+    padding: 15px;
+    background: #0a8a2f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #076b24;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+    <img src="015d8ea6bca51d4a81fe400ce1642649.PNG" >
+</header>
+
+<div class="banner">
+    <img src="ea9cfa0f0725724236946a7e5a545b03.jpg" >
+</div>
+
+<h2>Agendamento de BI</h2>
+
+<div class="form-container">
+
+<form action="conexao.php" method="POST">
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Tipo de Pedido:</label>
+            <select name="tipo_bi" id="tipo_bi" required onchange="mostrarCampoBI()">
+                <option value="">Selecione</option>
+                <option value="novo">Novo BI</option>
+                <option value="renovacao">Renovação</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Nome Completo:</label>
+            <input type="text" name="nome" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Data de Nascimento:</label>
+            <input type="date" name="data_nascimento" id="data_nascimento" required onchange="calcularIdade()">
+        </div>
+
+        <div class="form-group">
+            <label>Idade:</label>
+            <input type="text" id="idade" name="idade" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Vitalício:</label>
+            <input type="text" id="vitalicio" name="vitalicio" readonly>
+        </div>
+    </div>
+
+    <div id="num_bi_container" style="display:none;">
+        <label>Número do BI Anterior:</label>
+        <input type="text" name="num_bi_anterior">
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Província:</label>
+            <select name="provincia" required>
+                <option value="">Selecione</option>
+                <option>Maputo Cidade</option>
+                <option>Maputo Provincia</option>
+                <option>Gaza</option>
+                <option>Sofala</option>
+                <option>Inhambane</option>
+                <option>Manica</option>
+                <option>Tete</option>
+                <option>Cabo Delgado</option>
+                <option>Niassa</option>
+                <option>Nampula</option>
+                <option>Zambezia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Distrito:</label>
+            <input type="text" name="distrito" required>
+        </div>
+
+        <div class="form-group">
+            <label>Localidade:</label>
+            <input type="text" name="localidade" required>
+        </div>
+    </div>
+
+    <label>Data de Agendamento:</label>
+    <input type="date" name="data_agendamento" required>
+
+    <button class="btn">Submeter</button>
+</form>
+
+</div>
+
+<script>
+
+function mostrarCampoBI() {
+    const tipo = document.getElementById('tipo_bi').value;
+    document.getElementById('num_bi_container').style.display =
+        tipo === 'renovacao' ? 'block' : 'none';
+}
+
+function calcularIdade() {
+    const data = document.getElementById('data_nascimento').value;
+    if (!data) return;
+
+    const hoje = new Date();
+    const nasc = new Date(data);
+
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    const mes = hoje.getMonth() - nasc.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoje.getDate() < nasc.getDate())) {
+        idade--;
+    }
+
+    document.getElementById('idade').value = idade;
+    document.getElementById('vitalicio').value = idade >= 50 ? "Sim" : "Não";
+}
+
+</script>
+
+</body>
+</html>
